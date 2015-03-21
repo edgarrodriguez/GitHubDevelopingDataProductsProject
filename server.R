@@ -9,15 +9,36 @@ library(shiny)
 
 shinyServer(function(input, output) {
 
-  output$distPlot <- renderPlot({
+  output$distTrucks <- renderPlot({
 
     # generate bins based on input$bins from ui.R
     x    <- faithful[, 2]
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    trucks <- seq(min(x), max(x), length.out = input$trucks + 1)
 
     # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    hist(x, breaks = trucks, col = 'darkgray', border = 'white')
 
   })
 
+  output$distShovels <- renderPlot({
+          
+          # generate bins based on input$bins from ui.R
+          x    <- faithful[, 2]
+          shovels <- seq(min(x), max(x), length.out = input$shovels + 1)
+          
+          # draw the histogram with the specified number of bins
+          hist(x, breaks = shovels, col = 'darkgray', border = 'white')
+  
+                                })
+  
+          output$text1 <- renderText({input$text1})
+          output$text2 <- renderText({input$text2})
+  
+          output$text3 <- renderText({
+                  input$goButton
+                  isolate(paste(input$text1, input$text2))
+                  
+                                 })
+                                 
+  
 })
