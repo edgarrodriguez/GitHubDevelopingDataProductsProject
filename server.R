@@ -7,38 +7,44 @@
 
 library(shiny)
 
+# read csv with productivity of shovel type by month
+df = read.csv("productiondata.txt", header = TRUE)
+
+# get the average of productivity for each type of shovel
+meanBuc <- mean (df[,3])
+meanPyH <- mean (df[,4])
+
+
 shinyServer(function(input, output) {
 
-  output$distTrucks <- renderPlot({
+  output$distProdBuc <- renderPlot({
 
-    # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
-    trucks <- seq(min(x), max(x), length.out = input$trucks + 1)
+    # reads productivity for shovel type 1
+    ProductivityShovelBuc    <- df[, 3]
 
-    # draw the histogram with the specified number of bins
-    hist(x, breaks = trucks, col = 'darkgray', border = 'white')
+    # draw the histogram of productivity for shovel type 1
+    hist(ProductivityShovelBuc, breaks = 10, col = 'darkgray', border = 'white')
 
   })
 
-  output$distShovels <- renderPlot({
+  output$distProdPyH <- renderPlot({
+
+    # reads productivity for shovel type 2
+    ProductivityShovelPyH    <- df[, 4]
           
-          # generate bins based on input$bins from ui.R
-          x    <- faithful[, 2]
-          shovels <- seq(min(x), max(x), length.out = input$shovels + 1)
-          
-          # draw the histogram with the specified number of bins
-          hist(x, breaks = shovels, col = 'darkgray', border = 'white')
+    # draw the histogram of productivity for shovel type 2
+    hist(ProductivityShovelPyH, breaks = 10, col = 'darkgray', border = 'white')
   
-                                })
+   })
   
-          output$text1 <- renderText({input$text1})
-          output$text2 <- renderText({input$text2})
+  output$hoursBuc <- renderText({input$hoursBuc})
+  output$hoursPyH <- renderText({input$hoursPyH})
   
-          output$text3 <- renderText({
+  output$predictionProd <- renderText({
                   input$goButton
-                  isolate(paste(input$text1, input$text2))
+                  isolate((input$hoursBuc * meanBuc * input$numberofshovelstype1 + input$hoursPyH * meanPyH * input$numberofshovelstype2))
                   
-                                 })
+   })
                                  
   
 })

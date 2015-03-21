@@ -15,31 +15,34 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for number of bins
   sidebarLayout(
     sidebarPanel(
-      sliderInput("trucks",
-                  "Number of trucks:",
+      sliderInput("numberofshovelstype1",
+                  "Number of Buc Shovels:",
                   min = 1,
-                  max = 120,
-                  value = 30),
-      sliderInput("shovels",
-                  "Number of shovels:",
+                  max = 5,
+                  value = 2),
+      sliderInput("numberofshovelstype2",
+                  "Number of PyH shovels:",
                   min = 1,
-                  max = 10,
-                  value = 4),
-      textInput(inputId="text1", label = "Input Text1"),
-      textInput(inputId="text2", label = "Input Text2"),
+                  max = 5,
+                  value = 2),
+      numericInput(inputId="hoursBuc", label = "Number of Hours - Buc",value = 24),
+      numericInput(inputId="hoursPyH", label = "Number of Hours - PyH",value = 24),
       actionButton("goButton", "Predict Production")
     ),
 
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distTrucks"),
-      plotOutput("distShovels"),
-      p('Output text1'),
-      textOutput('text1'),
-      p('Output text2'),
-      textOutput('text2'),
-      p('Output text3'),
-      textOutput('text3')
+      p('This model calculates Mine production considering')     ,       
+      p('(Number of Shovels * Shovel productivity * Number of Production Hours)') ,
+      p('Productivity average is read from productiondata.txt file') ,
+      plotOutput("distProdBuc"),
+      plotOutput("distProdPyH"),
+      p('Number of Buc Hours'),
+      textOutput('hoursBuc'),
+      p('Number of PyH Hours'),
+      textOutput('hoursPyH'),      
+      p('Production Prediction'),
+      textOutput('predictionProd')
     )
   )
 ))
